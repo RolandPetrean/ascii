@@ -15,12 +15,19 @@ fn main() {
   let gray_image = image.grayscale();
   let (width, height) = gray_image.dimensions();
   
+  let mut scale: i32 = 1;
+  if args.len()>3 {
+    scale = args[3].parse::<i32>().unwrap();
+  }
+
   let mut output = String::new();
   for i in 0..height {
     for j in 0..width {
       let pixel = gray_image.get_pixel(j, i);
       let index = (pixel[0] as f32/255.0*(CHARS.len() as f32-1.0)) as u8;
-      output.push(CHARS.chars().nth(index as usize).unwrap());
+      for _ in 0..scale {
+        output.push(CHARS.chars().nth(index as usize).unwrap());
+      }
     }
     output.push('\n');
   }
